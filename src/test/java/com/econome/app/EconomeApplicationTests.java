@@ -1,4 +1,4 @@
-package com.econome;
+package com.econome.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

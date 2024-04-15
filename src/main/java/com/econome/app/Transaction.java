@@ -1,60 +1,92 @@
 package com.econome.app;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.time.LocalDate;
+import com.econome.app.Category;
 
 /**
  * Represents a financial transaction in the application.
  * Each transaction has an id, amount, type, category, payment method, currency, description, and date.
  */
-@Entity
+//@Entity
 public class Transaction {
 
-    /**
-     * The unique identifier of the transaction.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    /**
-     * The amount of the transaction.
-     */
-    private double amount;
-
-    /**
-     * The type of the transaction (income or expense).
-     */
-    @Enumerated(EnumType.STRING)
     private TransactionType type;
-
-    /**
-     * The category of the transaction.
-     */
-    @ManyToOne
+    private double amount;
     private Category category;
-
-    /**
-     * The payment method used for the transaction.
-     */
     private String paymentMethod;
-
-    /**
-     * The currency in which the transaction was made.
-     */
     private String currency;
-
-    /**
-     * A description of the transaction.
-     */
     private String description;
-
-    /**
-     * The date of the transaction.
-     */
     private LocalDate date;
 
+    //Constructors
+    public Transaction(String type, double amount, String category, String paymentMethod, String currency, String description, LocalDate date) {
+        this.type = TransactionType.valueOf(type.toUpperCase());
+        this.amount = amount;
+        this.category = new Category();
+        this.category.setName(category);
+        this.paymentMethod = paymentMethod;
+        this.currency = currency;
+        this.description = description;
+        this.date = date;
+    }
     // getters and setters
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }
 
 /**
