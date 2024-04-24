@@ -2,7 +2,6 @@ package com.econome.app;
 
 //import javax.persistence.*;
 import java.time.LocalDate;
-import com.econome.app.Category;
 
 /**
  * Represents a financial transaction in the application.
@@ -13,7 +12,7 @@ public class Transaction {
 
     private TransactionType type;
     private double amount;
-    private Category category;
+    private String category;
     private String paymentMethod;
     private String currency;
     private String description;
@@ -23,8 +22,7 @@ public class Transaction {
     public Transaction(String type, double amount, String category, String paymentMethod, String currency, String description, LocalDate date) {
         this.type = TransactionType.valueOf(type.toUpperCase());
         this.amount = amount;
-        this.category = new Category();
-        this.category.setName(category);
+        this.category = category;
         this.paymentMethod = paymentMethod;
         this.currency = currency;
         this.description = description;
@@ -48,11 +46,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
