@@ -10,31 +10,39 @@ import java.time.LocalDate;
 //@Entity
 public class Transaction {
 
-    private TransactionType type;
+    private String name;
+    private String type;
     private double amount;
     private String category;
     private String paymentMethod;
     private String currency;
-    private String description;
     private LocalDate date;
 
     //Constructors
-    public Transaction(String type, double amount, String category, String paymentMethod, String currency, String description, LocalDate date) {
-        this.type = TransactionType.valueOf(type.toUpperCase());
+    public Transaction(String name, String type, double amount, String category, String paymentMethod, String currency, LocalDate date) {
+        this.name = name;
+        this.type = type;
         this.amount = amount;
         this.category = category;
         this.paymentMethod = paymentMethod;
         this.currency = currency;
-        this.description = description;
         this.date = date;
     }
     // getters and setters
 
-    public TransactionType getType() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(TransactionType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -70,14 +78,6 @@ public class Transaction {
         this.currency = currency;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -85,20 +85,4 @@ public class Transaction {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-}
-
-/**
- * Represents the type of a transaction.
- * A transaction can either be an income or an expense.
- */
-enum TransactionType {
-    /**
-     * Represents an income transaction.
-     */
-    INCOME,
-
-    /**
-     * Represents an expense transaction.
-     */
-    EXPENSE
 }
