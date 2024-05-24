@@ -15,6 +15,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedOrigins("http://localhost:3000",
                                 "http://localhost:5173",
-                                "https://econome-webtech-frontend.onrender.com");
+                                "https://econome-webtech-frontend.onrender.com",
+                                "3.75.158.163",
+                                "3.125.183.140",
+                                "35.157.117.28");
     }
 }
