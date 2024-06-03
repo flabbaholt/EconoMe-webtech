@@ -1,5 +1,7 @@
-package com.econome.app;
+package com.econome.app.service;
 
+import com.econome.app.model.Transaction;
+import com.econome.app.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
