@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 public class TransactionController {
 
@@ -28,12 +29,8 @@ public class TransactionController {
         return transactionRepository.save(transaction);
     }
 
-    /*@GetMapping("/transactions")
-    public List<Transaction> getTransactions() {
-        Transaction transaction = new Transaction("Restaurant", "Expense", 100.0, "Food", "Cash", "USD", LocalDate.now());
-        Transaction transaction2 = new Transaction("Monthly Salary","Income", 1000.0, "Salary", "Bank", "USD", LocalDate.now());
-        Transaction transaction3 = new Transaction("Bus ticket","Expense", 50.0, "Transport", "Credit card", "USD", LocalDate.now());
-
-        return List.of(transaction, transaction2, transaction3);
-    }*/
+    @DeleteMapping("/transactions/deleteById/{id}")
+    public void deleteTransaction(@PathVariable Long id) {
+        transactionRepository.deleteById(id);
+    }
 }
