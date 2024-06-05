@@ -1,9 +1,12 @@
 package com.econome.app.controller;
 
 import com.econome.app.model.Currency;
+import com.econome.app.projection.TransactionProjection;
 import com.econome.app.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/currencies")
@@ -20,5 +23,10 @@ public class CurrencyController {
     @GetMapping("/{id}")
     public Currency getCurrency(@PathVariable Long id) {
         return currencyService.get(id);
+    }
+
+    @GetMapping
+    public List<Currency> getCurrencies() {
+        return currencyService.getAll();
     }
 }

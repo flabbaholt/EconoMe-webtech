@@ -5,6 +5,7 @@ import com.econome.app.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,9 @@ public class CurrencyService {
     public Currency get(Long id) {
         Optional<Currency> currency = currencyRepository.findById(id);
         return currency.orElse(null);
+    }
+
+    public List<Currency> getAll() {
+        return currencyRepository.findAll();
     }
 }
