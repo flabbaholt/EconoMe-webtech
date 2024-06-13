@@ -24,6 +24,11 @@ public class TransactionController {
         return transactionRepository.findAllProjectedBy();
     }
 
+    @GetMapping("/totalBalance/{year}/{month}")
+    public Double getTotalBalance(@PathVariable Integer year, @PathVariable Integer month) {
+        return transactionRepository.getTotalBalance(year, month);
+    }
+
     @PostMapping("/transactions")
     public Transaction createTransaction(@RequestBody Transaction transaction) {
         return transactionRepository.save(transaction);
