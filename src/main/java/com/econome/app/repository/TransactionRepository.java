@@ -16,4 +16,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     // This query is used to get the total balance of a specific month and year
     @Query("SELECT SUM(t.amount) FROM Transaction t WHERE YEAR(t.transactionDate) = ?1 AND MONTH(t.transactionDate) = ?2")
     Double getTotalBalance(Integer year, Integer month);
+
+    // This query is used to get all years with transactions
+    @Query("SELECT DISTINCT YEAR(t.transactionDate) FROM Transaction t ORDER BY YEAR(t.transactionDate)")
+    List<Integer> getYears();
+
+    // This query is used to get all months with transactions
+    @Query("SELECT DISTINCT MONTH(t.transactionDate) FROM Transaction t ORDER BY MONTH(t.transactionDate)")
+    List<Integer> getMonths();
+
+    // This query is used to get all months of a specific year with transactions
+    @Query("SELECT DISTINCT MONTH(t.transactionDate) FROM Transaction t WHERE YEAR(t.transactionDate) = ?1 ORDER BY MONTH(t.transactionDate)")
+    List<Integer> getMonthsByYear(Integer year);
 }

@@ -29,6 +29,21 @@ public class TransactionController {
         return transactionRepository.getTotalBalance(year, month);
     }
 
+    @GetMapping("/transactions/getYears")
+    public List<Integer> getYears() {
+        return transactionRepository.getYears();
+    }
+
+    @GetMapping("/transactions/getMonths")
+    public List<Integer> getMonths() {
+        return transactionRepository.getMonths();
+    }
+
+    @GetMapping("/transactions/getMonthsByYear/{year}")
+    public List<Integer> getMonthsByYear(@PathVariable Integer year) {
+        return transactionRepository.getMonthsByYear(year);
+    }
+
     @PostMapping("/transactions")
     public Transaction createTransaction(@RequestBody Transaction transaction) {
         return transactionRepository.save(transaction);
