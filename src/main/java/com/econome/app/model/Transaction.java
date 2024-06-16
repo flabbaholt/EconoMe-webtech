@@ -26,19 +26,19 @@ public class Transaction {
     private LocalDate transactionDate;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "payment_method_id", insertable = false, updatable = false)
+    @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_id", insertable = false, updatable = false)
+    @JoinColumn(name = "type_id")
     private Type type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "currency_id", insertable = false, updatable = false)
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
     public Transaction() {}
