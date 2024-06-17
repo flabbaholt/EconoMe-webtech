@@ -66,7 +66,7 @@ public class TransactionController {
             BigDecimal amount = balanceProjection.getAmount();
             String currency = balanceProjection.getCurrency();
             double exchangeRate = recalculatedRates.get(currency);
-            System.out.println("Rate for" + currency + " is " + exchangeRate + "resulting in " + amount.doubleValue() / exchangeRate);
+            System.out.println("Amount "+amount +": Rate for " + currency + " is " + exchangeRate + "resulting in " + amount.doubleValue() / exchangeRate);
 
             double amountInEuro = amount.doubleValue() / exchangeRate;
             totalBalanceInEuro += amountInEuro;
