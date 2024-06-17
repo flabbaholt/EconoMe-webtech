@@ -4,8 +4,13 @@ import com.econome.app.projection.TransactionProjection;
 import com.econome.app.repository.*;
 import com.econome.app.model.*;
 import com.econome.app.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import com.econome.app.projection.BalanceProjection;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
@@ -14,6 +19,9 @@ import java.time.LocalDate;
 
 @RestController
 public class TransactionController {
+
+    @Value("${EXCHANGE_CURRENCY_API_KEY}")
+    private String apiKey;
 
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
@@ -36,7 +44,37 @@ public class TransactionController {
 
     @GetMapping("/totalBalance/{year}/{month}")
     public Double getTotalBalance(@PathVariable Integer year, @PathVariable Integer month) {
-        return transactionRepository.getTotalBalance(year, month);
+        List<BalanceProjection> balanceProjections = transactionRepository.getTotalBalance(year, month);
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> response = restTemplate.getForObject("https://openexchangerates.org/api/latest.json?app_id="+apiKey, Map.class);
+
+        Map<String, Number> rates = (Map<String, Number>) response.get("rates");
+        double eurRate = rates.get("EUR").doubleValue();
+
+        Map<String, Double> recalculatedRates = new HashMap<>();
+        for (Map.Entry<String, Number> entry : rates.entrySet()) {
+            if (entry.getKey().equals("USD")) {
+                recalculatedRates.put(entry.getKey(), 1 / eurRate);
+            } else {
+                recalculatedRates.put(entry.getKey(), entry.getValue().doubleValue() / eurRate);
+            }
+        }
+
+        double totalBalanceInEuro = 0;
+
+        for (BalanceProjection balanceProjection : balanceProjections) {
+            BigDecimal amount = balanceProjection.getAmount();
+            String currency = balanceProjection.getCurrency();
+            double exchangeRate = recalculatedRates.get(currency);
+            System.out.println("Rate for" + currency + " is " + exchangeRate + "resulting in " + amount.doubleValue() / exchangeRate);
+
+            double amountInEuro = amount.doubleValue() / exchangeRate;
+            totalBalanceInEuro += amountInEuro;
+        }
+
+        totalBalanceInEuro = Math.round(totalBalanceInEuro * 100.0) / 100.0;
+
+        return totalBalanceInEuro;
     }
 
     @GetMapping("/transactions/getYears")
