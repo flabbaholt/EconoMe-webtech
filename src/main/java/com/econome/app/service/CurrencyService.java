@@ -23,6 +23,10 @@ public class CurrencyService {
         return currency.orElse(null);
     }
 
+    public Currency findByName(String name) {
+        return currencyRepository.findByName(name);
+    }
+
     public List<Currency> getAll() {
         return currencyRepository.findAll();
     }
