@@ -6,6 +6,7 @@ import com.econome.app.service.CurrencyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,8 @@ public class CurrencyController {
     public void init() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            Map<String, List<String>> jsonMap = mapper.readValue(new ClassPathResource("currency_abbreviations.json").getFile(), Map.class);
+            Resource resource = new ClassPathResource("currency_abbreviations.json");
+            Map<String, List<String>> jsonMap = mapper.readValue(resource.getInputStream(), Map.class);
             validCurrencies = jsonMap.get("currencies");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load currency abbreviations", e);
