@@ -18,3 +18,8 @@ jobs:
           java-version: '21'
       - name: Run Tests
         run: ./gradlew test
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          EXCHANGE_CURRENCY_API_KEY: ${{ secrets.EXCHANGE_CURRENCY_API_KEY }}
