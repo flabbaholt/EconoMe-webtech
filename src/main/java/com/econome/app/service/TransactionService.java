@@ -1,21 +1,28 @@
 package com.econome.app.service;
 
 import com.econome.app.model.Transaction;
+import com.econome.app.projection.TransactionProjection;
 import com.econome.app.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TransactionService {
 
     @Autowired
-    TransactionRepository repo;
+    private TransactionRepository transactionRepository;
 
     public Transaction save(Transaction transaction) {
-        return repo.save(transaction);
+        return transactionRepository.save(transaction);
     }
 
     public Transaction get(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Transaction with ID"+id+"not found"));
+        return transactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Transaction with ID" + id + " not found"));
+    }
+
+    public List<TransactionProjection> getTransactionsByYear(int year) {
+        return transactionRepository.findAllByYear(year);
     }
 }
