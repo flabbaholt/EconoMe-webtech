@@ -2,11 +2,16 @@ package com.econome.app.controller;
 
 import com.econome.app.model.Currency;
 import com.econome.app.service.CurrencyService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +36,40 @@ public class CurrencyController {
     @Autowired
     private CurrencyService currencyService;
 
+
+=======
+    private List<String> validCurrencies;
+
+    @PostConstruct
+    public void init() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Resource resource = new ClassPathResource("currency_abbreviations.json");
+            Map<String, List<String>> jsonMap = mapper.readValue(resource.getInputStream(), Map.class);
+            validCurrencies = jsonMap.get("currencies");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load currency abbreviations", e);
+        }
+    }
+  
     /**
      * Creates a new currency.
      *
      * @param currency The currency to create.
      * @return The created currency.
      */
+ 
     @PostMapping
     public Currency createCurrency(@RequestBody Currency currency) {
+        if (!validCurrencies.contains(currency.getName())) {
+            throw new IllegalArgumentException("Invalid currency: " + currency.getName());
+        }
+
+        Currency existingCurrency = currencyService.findByName(currency.getName());
+        if (existingCurrency != null) {
+            return existingCurrency;
+        }
+
         return currencyService.save(currency);
     }
 

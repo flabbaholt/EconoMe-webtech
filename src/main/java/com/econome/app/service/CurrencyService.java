@@ -42,6 +42,11 @@ public class CurrencyService {
         return currency.orElse(null);
     }
 
+
+    public Currency findByName(String name) {
+        return currencyRepository.findByName(name);
+    }
+
     /**
      * Retrieves all currencies from the database.
      *
