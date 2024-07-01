@@ -23,6 +23,8 @@ public class TransactionController {
     @Value("${EXCHANGE_CURRENCY_API_KEY}")
     private String apiKey;
 
+    @Autowired
+    private TransactionService transactionService;
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final PaymentMethodRepository paymentMethodRepository;
