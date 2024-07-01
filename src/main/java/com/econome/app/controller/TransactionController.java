@@ -16,8 +16,8 @@ import java.util.Map;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 @RestController
+@RequestMapping("/transactions")
 public class TransactionController {
 
     @Value("${EXCHANGE_CURRENCY_API_KEY}")
@@ -37,9 +37,13 @@ public class TransactionController {
         this.currencyRepository = currencyRepository;
     }
 
-    @GetMapping("/transactions")
-    public List<TransactionProjection> getTransactions() {
-        return transactionRepository.findAllProjectedBy();
+    @GetMapping
+    public List<Transaction> getTransactions(@RequestParam(required = false) Integer year) {
+        if (year != null) {
+            return transactionService.getTransactionsByYear(year);
+        } else {
+            return transactionRepository.findAll();
+        }
     }
 
     @GetMapping("/totalBalance/{year}/{month}")
@@ -77,17 +81,17 @@ public class TransactionController {
         return totalBalanceInEuro;
     }
 
-    @GetMapping("/transactions/getYears")
+    @GetMapping("/getYears")
     public List<Integer> getYears() {
         return transactionRepository.getYears();
     }
 
-    @GetMapping("/transactions/getMonths")
+    @GetMapping("/getMonths")
     public List<Integer> getMonths() {
         return transactionRepository.getMonths();
     }
 
-    @GetMapping("/transactions/getMonthsByYear/{year}")
+    @GetMapping("/getMonthsByYear/{year}")
     public List<Integer> getMonthsByYear(@PathVariable Integer year) {
         return transactionRepository.getMonthsByYear(year);
     }
@@ -119,7 +123,7 @@ public class TransactionController {
         return transactionRepository.save(transaction);
     }
 
-    @DeleteMapping("/transactions/deleteById/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public void deleteTransaction(@PathVariable Long id) {
         transactionRepository.deleteById(id);
     }
