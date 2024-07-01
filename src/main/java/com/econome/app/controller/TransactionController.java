@@ -98,7 +98,7 @@ public class TransactionController {
         return transactionRepository.getMonthsByYear(year);
     }
 
-    @PostMapping("/transactions")
+    @PostMapping
     public Transaction createTransaction(@RequestBody Map<String, String> payload) {
         Transaction transaction = new Transaction();
 
