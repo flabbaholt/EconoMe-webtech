@@ -1,7 +1,6 @@
 package com.econome.app.service;
 
 import com.econome.app.model.Transaction;
-import com.econome.app.projection.TransactionProjection;
 import com.econome.app.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class TransactionService {
         return transactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Transaction with ID" + id + " not found"));
     }
 
-    public List<TransactionProjection> getTransactionsByYear(int year) {
+    public List<Transaction> getTransactionsByYear(int year) {
         return transactionRepository.findAllByYear(year);
     }
 }
