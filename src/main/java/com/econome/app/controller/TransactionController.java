@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import com.econome.app.projection.BalanceProjection;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +40,14 @@ public class TransactionController {
         this.currencyRepository = currencyRepository;
     }
 
+    @GetMapping("/dashboard")
+    public List<Transaction> getTransactionsByYear(@RequestParam Integer year) {
+        return transactionService.getTransactionsByYear(year);
+    }
+
     @GetMapping
-    public List<Transaction> getTransactions(@RequestParam(required = false) Integer year) {
-        if (year != null) {
-            return transactionService.getTransactionsByYear(year);
-        } else {
-            return transactionRepository.findAll();
-        }
+    public List<TransactionProjection> getTransactions() {
+        return transactionRepository.findAllProjectedBy();
     }
 
     @GetMapping("/totalBalance/{year}/{month}")

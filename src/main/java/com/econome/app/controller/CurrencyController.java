@@ -103,17 +103,26 @@ public class CurrencyController {
     @GetMapping("/exchangeRates")
     public Map<String, Double> getExchangeRates() {
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> response = restTemplate.getForObject("https://openexchangerates.org/api/latest.json?app_id="+apiKey, Map.class);
-
-        Map<String, Number> rates = (Map<String, Number>) response.get("rates");
-        double eurRate = rates.get("EUR").doubleValue();
-
         Map<String, Double> recalculatedRates = new HashMap<>();
-        for (Map.Entry<String, Number> entry : rates.entrySet()) {
-            if (entry.getKey().equals("USD")) {
-                recalculatedRates.put(entry.getKey(), 1 / eurRate);
-            } else {
-                recalculatedRates.put(entry.getKey(), entry.getValue().doubleValue() / eurRate);
+        try {
+            Map<String, Object> response = restTemplate.getForObject("https://openexchangerates.org/api/latest.json?app_id="+apiKey, Map.class);
+            Map<String, Number> rates = (Map<String, Number>) response.get("rates");
+            double eurRate = rates.get("EUR").doubleValue();
+            for (Map.Entry<String, Number> entry : rates.entrySet()) {
+                if (entry.getKey().equals("USD")) {
+                    recalculatedRates.put(entry.getKey(), 1 / eurRate);
+                } else {
+                    recalculatedRates.put(entry.getKey(), entry.getValue().doubleValue() / eurRate);
+                }
+            }
+        } catch (Exception e) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                Resource resource = new ClassPathResource("exchangerates.json");
+                Map<String, Double> jsonMap = mapper.readValue(resource.getInputStream(), Map.class);
+                recalculatedRates = jsonMap;
+            } catch (IOException ioException) {
+                throw new RuntimeException("Failed to load exchange rates from local file", ioException);
             }
         }
         return recalculatedRates;
