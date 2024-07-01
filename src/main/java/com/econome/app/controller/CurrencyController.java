@@ -36,8 +36,9 @@ public class CurrencyController {
     @Autowired
     private CurrencyService currencyService;
 
-
-=======
+    /**
+     * A list of valid currency abbreviations.
+     */
     private List<String> validCurrencies;
 
     @PostConstruct
